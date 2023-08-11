@@ -12,7 +12,7 @@ int main(void)
 /* declare variable for single digit number */
 
 char (c);
-	for (c = '1'; c <= '9'; c++)
+	for (c = '0'; c <= '9'; c++)
 	{
 	putchar(c);
 		if (c != '9')
