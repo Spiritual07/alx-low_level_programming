@@ -19,8 +19,8 @@ int main(void)
 			putchar(v + '0');
 			if (u != 8) /* don't print comma after last number */
 				{
-				putchar(' ');
 				putchar(',');
+				putchar(' ');
 				}
 			}
 		}
