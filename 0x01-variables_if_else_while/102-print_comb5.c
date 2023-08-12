@@ -7,36 +7,25 @@
  */
 
 int main(void)
-{
-	int s, t, u, v;
 
-	for (s = 0; s <= 9; s++)
+{
+	int u, v;
+
+	for (u = 0; u <= 98; u++)
 	{
-		for (t = 0; t <= 9; t++)
+		for (v = u + 1; v <= 99; v++)
 		{
-			for (u = 0; u <= 9; u++)
-			{
-				for (v = 0; v <= 9; v++)
-				{
-					if (((u + v) > (s + t) &&  u >= s) || s < u)
-					{
-						putchar(s + '0');
-						putchar(t + '0');
-						putchar(' ');
-						putchar(u + '0');
-						putchar(v + '0');
-					if (s + t + u + v == 0 && s == 9)
-						{
-						break;
-						}
-					else
-					{
-					putchar(',');
-					putchar(' ');
-					}
-					}
-				}
-			}
+			putchar((u / 10) + '0');
+			putchar((u % 10) + '0');
+			putchar(' ');
+			putchar((v / 10) + '0');
+			putchar((v % 10) + '0');
+
+			if (u == 98 && v == 99)
+				continue;
+
+			putchar(',');
+			putchar(' ');
 		}
 	}
 
