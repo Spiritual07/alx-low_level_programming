@@ -11,9 +11,9 @@ int print_last_digit(int n)
 
 	int ld; /* declare variable for last digit */
 
-	ld = n % 10; /* get last digit by taking modulo of 10 */
+	ld = n % 10;
 
-	/* to get last digit first get absolue value */
+	/* to get last digit first get absolute value */
 	if (ld < 0)
 	{
 		ld = -ld;
@@ -21,5 +21,5 @@ int print_last_digit(int n)
 
 	_putchar(ld + '0');
 
-	return (n);
+	return (ld);
 }
