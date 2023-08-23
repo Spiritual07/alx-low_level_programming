@@ -14,20 +14,20 @@ int main(void)
     int loop_counter;
     int summation = 2772;
     
-    // seed the random number generator with current system time
+    /* seed the random number generator with current system time */
     srand(time(NULL));
 
-    // loop until summation > 122
+    /* loop until summation > 122 */
     for (loop_counter = 0; summation > 122; loop_counter++)
     {
-        // Generate a random number in the range 1 - 125 (Inclusive)
+        /* Generate a random number in the range 1 - 125 (Inclusive) */
         random_num = (rand() % 125) + 1;
-        // Print the character corresponding to ASCII value of random_num
+        /* Print the character corresponding to ASCII value of random_num */
         putchar(random_num);
-        // Deduct random_num from summation
+        /* Deduct random_num from summation */
         summation -= random_num;
     }
-    // Print the remaining ASCII character
+    /* Print the remaining ASCII character */
     putchar(summation);
     
     return 0;
