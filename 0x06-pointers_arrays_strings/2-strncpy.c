@@ -11,18 +11,17 @@
 char *_strncpy(char *dest, char *src, int n)
 {
 	int i;
-	char *p = dest; /* pointer 'p' to remember the start of the dest string */
 
-	/* Loop to copy characters from src to dest */
-	/*  up to n characters or until src's null terminator */
-	for (i = 0; i < n && *src != '\0'; i++)
+	/* Loop over the first 'n' characters of 'src' */
+	for (i = 0; i < n && src[i] != '\0'; i++)
 	{
-		*dest++ = *src++;
+		dest[i] = src[i]; /* Copy each character from 'src' to 'dest' */
 	}
-	for (; i < n; i++)
+	while (i < n)
 	{
-		*dest = '\0';
+		dest[i] = '\0'; /* Fill the rest of 'dest' with null characters ('\0') */
+		i++;
 	}
 
-	return (p); /* Return the starting address of the copied dest string */
+	return (dest); /* return dest string */
 }
