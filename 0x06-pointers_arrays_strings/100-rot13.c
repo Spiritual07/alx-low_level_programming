@@ -12,12 +12,13 @@ char *rot13(char *s)
 
 	for (x = 0; s[x] != '\0'; x++)
 	{
-		for (; (s[x] >= 'a' && s[x] <= 'z') || (s[x] >= 'A' && s[x] <= 'Z'); x++)
+		while ((s[x] >= 'a' && s[x] <= 'z') || (s[x] >= 'A' && s[x] <= 'Z'))
 		{
 			if ((s[x] >= 'a' && s[x] <= 'm') || (s[x] >= 'A' && s[x] <= 'M'))
 				s[x] = s[x] + 13;
 			else
 				s[x] = s[x] - 13;
+			x++;
 		}
 	}
 	return (s);
