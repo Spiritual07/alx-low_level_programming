@@ -18,8 +18,8 @@ char *rot13(char *s)
 		{
 			if (s[x] == orig[y])
 			{
-					s[x] = rot13[y];
-					break;
+				s[x] = rot13[y];
+				break;
 			}
 		}
 	}
