@@ -17,7 +17,7 @@ void print_buffer(char *b, int size)
 	else
 	{
 		/* loop through the buffer and print the index */
-		for (x = 0; x < size; x += 10) 
+		for (x = 0; x < size; x += 10)
 		{
 			printf("%08x: ", x);
 			/* Loop to print each byte in hexadecimal */
