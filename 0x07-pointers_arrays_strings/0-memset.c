@@ -16,9 +16,9 @@ char *_memset(char *s, char b, unsigned int n)
 	/* loop through each byte */
 	for (x = 0; x < n; x++)
 	{
-		*ptS = b; /* Fill memory with b by assigning it to ptS */
+		*s = b; /* Fill memory with b by assigning it to ptS */
 
-		ptS++; /* increment to move to the next memory location */
+		s++; /* increment to move to the next memory location */
 	}
 
 	return (ptS);
