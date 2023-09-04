@@ -35,6 +35,6 @@ char *_strdup(char *str)
 	for (y = 0; y <= x; y++)
 	{
 		cpy[y] = str[y];
-	}		
+	}
 	return (cpy); /* return duplicate string */
 }
