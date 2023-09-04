@@ -25,6 +25,7 @@ int **alloc_grid(int width, int height)
 /* check if memory allocation failed */
 	if (array == NULL)
 	{
+		free(array);
 		return (NULL);
 	}
 /* allocate memory for each row of the 2D array */
@@ -33,6 +34,10 @@ int **alloc_grid(int width, int height)
 		array[x] = malloc(sizeof(int) * width);
 		if (array[x] == NULL)
 		{
+		/* free all alocated memory if allocation fails */
+			for (--x; x >= 0; --x)
+				free(array[x]);
+			free(array);
 			return (NULL);
 		}
 		for (y = 0; y < width; y++)
@@ -40,5 +45,5 @@ int **alloc_grid(int width, int height)
 			array[x][y] = 0; /* initialize element of array to 0 */
 		}
 	}
-	return (array); /* return point to the array */
+	return (array); /* return pointer to the array */
 }
