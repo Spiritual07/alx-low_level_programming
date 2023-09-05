@@ -15,13 +15,15 @@ char *argstostr(int ac, char **av)
 	int len = 0;
 	char *str;
 
+	if (ac == 0)
+	{
+		return (NULL);
+	}
 /* calculate length of string to be concatenated */
 	for (x = 0; x < ac; x++)
 	{
 		if (av[x] == NULL) /* check if av is NULL */
-		{
 			return (NULL);
-		}
 		for (y = 0; av[x][y] != '\0'; y++)
 		{
 			len++;
