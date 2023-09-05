@@ -1,6 +1,8 @@
 #include "main.h"
 #include <stdlib.h>
 
+void ch_free_grid(char **grid, int height);
+
 /**
  * strtow - function that splits a string into words.
  * @str: input string to be splited
@@ -10,40 +12,55 @@
 char **strtow(char *str)
 {
 	char **a_str;
-	int c, height = 0, x, y, z = 0, w_len = 0;
+	int c, height = 0, x, y, z = 0;
 
 	if (str == NULL || *str == '\0')
 		return (NULL);
 	for (c = 0; str[c] != '\0'; c++)
-	{
 		if (str[c] != ' ' && (str[c + 1] == ' ' || str[c + 1] == '\0'))
 			height++;
-	}
-	a_str = (char **)malloc((height + 1) * sizeof(char *));
+	a_str = malloc((height + 1) * sizeof(char *));
 	if (a_str == NULL || height == 0)
 	{
 		free(a_str);
 		return (NULL);
 	}
-	for (x = 0, z = 0; x < height; x++)
+	for (x = z = 0; x < height; x++)
 	{
-		while (str[z] == ' ')
-			z++;
-		while (str[z + w_len] != ' ' && str[z + w_len] != '\0')
-			w_len++;
-		a_str[x] = (char *)malloc((w_len + 1) * sizeof(char));
-		if (a_str[x] == NULL)
+		for (c = z; str[c] != '\0'; c++)
 		{
-			for (y = 0; y < x; y++)
-				free(a_str[y]);
-			free(a_str);
-			return (NULL);
+			if (str[c] == ' ')
+				z++;
+			if (str[c] != ' ' && (str[c + 1] == ' ' || str[c + 1] == '\0'))
+			{
+				a_str[x] = malloc(sizeof(char) * (c - z + 2));
+				if (a_str[x] == NULL)
+				{
+					ch_free_grid(a_str, x);
+					return (NULL);
+				}
+				break;
+			}
 		}
-		for (y = 0; y < w_len; y++)
-			a_str[x][y] = str[z + y];
+		for (y = 0; z <= c; z++, y++)
+			a_str[x][y] = str[z];
 		a_str[x][y] = '\0';
-		z = z + w_len;
 	}
-	a_str[x] = (NULL);
+	a_str[x] = NULL;
 	return (a_str);
+}
+
+/**
+ * ch_free_grid - frees a 2 dimensional array.
+ * @grid: multidimensional array of char.
+ * @height: height of the array.
+ */
+void ch_free_grid(char **grid, int height)
+{
+	if (grid != NULL && height != 0)
+	{
+		for (; height >= 0; height--)
+			free(grid[height]);
+		free(grid);
+	}
 }
