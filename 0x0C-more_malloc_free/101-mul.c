@@ -11,10 +11,10 @@
 
 int main(int argc, char *argv[])
 {
-	int x, y; 
-	long int num1, num2, mul;
+	int x, y;
+	int num1, num2, mul;
 
-	if (argc < 3)
+	if (argc != 3)
 	{
 		printf("Error\n");
 		exit(98);
@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
 	num2 = atoi(argv[2]);
 
 	mul = num1 * num2;
-	printf("%ld\n", mul);
+	printf("%d\n", mul);
 
 	return (0);
 }
