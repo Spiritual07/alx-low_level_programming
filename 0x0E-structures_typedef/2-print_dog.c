@@ -4,7 +4,7 @@
 
 /**
  * print_dog - function that prints a struct dog
- * struct dog - structure containing dog information
+i * struct dog - structure containing dog information
  * @d: pointer to variable declared
  */
 
@@ -22,9 +22,14 @@ void print_dog(struct dog *d)
 	{
 		printf("Name: %s\n", d->name);
 	}
-
-	printf("Age: %f\n", d->age);
-
+	if (d->age == 0)
+	{
+		printf("Age: (Nil)\n");
+	}
+	else
+	{
+		printf("Age: %f\n", d->age);
+	}
 	if (d->owner == NULL)
 	{
 		printf("Owner: (Nil)\n");
