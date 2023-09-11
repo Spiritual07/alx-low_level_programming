@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 #include "dog.h"
 
 /**
@@ -22,7 +23,7 @@ void print_dog(struct dog *d)
 	{
 		printf("Name: %s\n", d->name);
 	}
-	if (d->age == 0)
+	if (isnan(d->age))
 	{
 		printf("Age: (Nil)\n");
 	}
