@@ -2,6 +2,14 @@
 #include <stdlib.h>
 #include <string.h>
 
+/**
+ * new_dog - function that creatyes new dog
+ * @name: name of dog
+ * @age: age of dog
+ * @owner: dog owner name
+ * Return: pointer to copy of new dog
+ */
+
 dog_t *new_dog(char *name, float age, char *owner)
 {
 	dog_t *new_dog;
@@ -21,7 +29,7 @@ dog_t *new_dog(char *name, float age, char *owner)
 		free(new_dog);
 		return (NULL);
 	}
-	
+
 	strcpy(new_dog->name, name);
 	new_dog->age = age;
 	strcpy(new_dog->owner, owner);
