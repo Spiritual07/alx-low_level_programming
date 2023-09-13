@@ -28,14 +28,13 @@ int main(int ac, char *av[])
 
 	ptrM = (char *)main;
 
-	if (nBytes > 0)
+
+	while (x < nBytes)
 	{
-		while (x < nBytes)
-		{
-			printf("%02hhx ", ptrM[x]);
-			x++;
-		}
-		printf("\n");
+		printf("%02hhx ", ptrM[x]);
+		x++;
 	}
+	printf("\n");
+
 	return (0);
 }
