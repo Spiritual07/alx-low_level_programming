@@ -30,11 +30,12 @@ int main(int ac, char *av[])
 
 	if (nBytes > 0)
 	{
-		while (x < (nBytes - 1))
+		while (x < nBytes)
 		{
-			printf("%02hhx\n", ptrM[x++]);
+			printf("%02hhx ", ptrM[x]);
+			x++;
 		}
-		printf("%hhx\n", ptrM[x]);
+		printf("\n");
 	}
 	return (0);
 }
