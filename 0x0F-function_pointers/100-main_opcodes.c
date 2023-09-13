@@ -10,24 +10,25 @@
 
 int main(int ac, char *av[])
 {
-	char *ptrM;
+	char *ptrM; /* declare function poiter */
 	int x = 0, nBytes;
 
-	if (ac != 2)
+	if (ac != 2) /* check if arguments entered is correct */
 	{
 		printf("Error\n");
 		exit(1);
 	}
-	nBytes = atoi(av[1]);
+	nBytes = atoi(av[1]); /* convert av array to interger */
 
-	if (nBytes < 0)
+	if (nBytes < 0) /* check if byte is less than 0 */
 	{
 		printf("Error\n");
 		exit(2);
 	}
 
-	ptrM = (char *)main;
+	ptrM = (char *)main; /* initialize pointer to main function */
 
+/* Print the hexadecimal representation of the first nBytes of the program */
 	while (x < nBytes)
 	{
 		printf("%02x", ptrM[x] & 0xFF);
