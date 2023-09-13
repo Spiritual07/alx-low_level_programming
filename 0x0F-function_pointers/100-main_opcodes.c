@@ -11,7 +11,7 @@
 int main(int ac, char *av[])
 {
 	char *ptrM;
-	int x, nBytes;
+	int x = 0, nBytes;
 
 	if (ac != 2)
 	{
@@ -30,10 +30,11 @@ int main(int ac, char *av[])
 
 	if (nBytes > 0)
 	{
-		for (x = 0; x < (nBytes - 1); x++)
+		while (x < (nBytes - 1))
 		{
-			printf("%02hhx\n", ptrM[x] & 0xFF);
+			printf("%02hhx\n", ptrM[x++]);
 		}
+		printf("%hhx\n", ptrM[x]);
 	}
 	return (0);
 }
