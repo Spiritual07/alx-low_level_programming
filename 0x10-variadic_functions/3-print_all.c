@@ -9,7 +9,7 @@
 
 void print_all(const char * const format, ...)
 {
-	unsigned int x = 0, y;
+	unsigned int x = 0, y, z = 0;
 	char *str;
 	va_list args;
 	const char fmt[] = "cifs";
@@ -20,23 +20,23 @@ void print_all(const char * const format, ...)
 		y = 0;
 		while (fmt[y])
 		{
-			if (format[x] == fmt[y] && y > 0)
+			if (format[x] == fmt[y] && z)
 				printf(", ");
 			y++;
 		}
 		switch (format[x])
 		{
 			case 'i':
-					printf("%d", va_arg(args, int));
+					printf("%d", va_arg(args, int)), z = 1;
 					break;
 			case 'c':
-					printf("%c", va_arg(args, int));
+					printf("%c", va_arg(args, int)), z = 1;
 					break;
 			case 'f':
-					printf("%f", va_arg(args, double));
+					printf("%f", va_arg(args, double)), z = 1;
 					break;
 			case 's':
-					str = va_arg(args, char*);
+					str = va_arg(args, char*), z = 1;
 					if (str == NULL)
 					{
 						printf("(nil)");
