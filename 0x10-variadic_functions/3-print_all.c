@@ -20,7 +20,7 @@ void print_all(const char * const format, ...)
 		y = 0;
 		while (fmt[y])
 		{
-			if (format[x] == fmt[y + 1])
+			if (format[x] == fmt[y] && y > 0)
 				printf(", ");
 			y++;
 		}
@@ -38,14 +38,15 @@ void print_all(const char * const format, ...)
 			case 's':
 					str = va_arg(args, char*);
 					if (str == NULL)
+					{
 						printf("(nil)");
+						break;
+					}
 					printf("%s", str);
 					break;
 			default:
 					break;
-		}
-		x++;
+		} x++;
 	}
-	va_end(args);
-	printf("\n");
+	va_end(args), printf("\n");
 }
