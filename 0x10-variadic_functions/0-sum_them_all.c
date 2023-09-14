@@ -10,17 +10,20 @@
 int sum_them_all(const unsigned int n, ...)
 {
 	unsigned int sum = 0, x, next_num;
-	va_list args;
+	va_list args; /* create a va_list variable */
 
-	va_start(args, n);
+	va_start(args, n); /*initialize the va_list variable */
+	/* check if there are no parameters */
 	if (n == 0)
 	{
 		return (0);
 	}
+	/* iterate through the parameters and check for next number using va_arg */
 	for (x = 0; x < n; x++)
 	{
 		next_num = va_arg(args, unsigned int);
 		sum += next_num;
 	}
+	va_end(args); /* clean up va_list when done with it */
 	return (sum);
 }
