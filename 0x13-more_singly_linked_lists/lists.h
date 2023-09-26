@@ -45,5 +45,6 @@ size_t print_listint_safe(const listint_t *head);
 void free_Alist(Alist_t **head);
 size_t free_listint_safe(listint_t **h);
 void free_Alist2(Alist_t **head);
+listint_t *find_listint_loop(listint_t *head);
 
 #endif
