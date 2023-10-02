@@ -23,7 +23,7 @@ ssize_t read_textfile(const char *filename, size_t letters)
 	{
 		return (0);
 	}
-	buff = malloc(letters);
+	buff = malloc(sizeof(char) * letters);
 	if (buff == NULL)
 	{
 		close(fileDes);
@@ -36,7 +36,7 @@ ssize_t read_textfile(const char *filename, size_t letters)
 		close(fileDes);
 		return (0);
 	}
-	bytesWritten = write(1, buff, bytesRead);
+	bytesWritten = write(STDOUT_FILENO, buff, bytesRead);
 	if (bytesWritten == -1 || bytesWritten != bytesRead)
 	{
 		free(buff);
