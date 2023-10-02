@@ -205,7 +205,7 @@ void check_system(char *ptr)
 int main(int ac, char *av[])
 {
 	int fileDes, read_size;
-	char ptr[27];
+	char ptr[64];
 
 	if (ac != 2)
 	{
