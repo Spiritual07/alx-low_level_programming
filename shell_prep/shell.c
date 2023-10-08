@@ -24,14 +24,52 @@ char *processInput(size_t *len, FILE *inputFile)
     return input;
 }
 
-/* Function to execute command */
 void executeCommand(char **command, char **environ, char *argv[])
 {
     pid_t child_pid;
     int stat_loc;
-	char *path, *directory;
-	char fullpath[255];
+    char *path, *path_copy, *directory;
+    char fullpath[255];
+    int command_found = 0;
 
+    /* If the command is not an absolute path, search the PATH directories */
+    if (command[0][0] != '/')
+    {
+        path = getenv("PATH");
+        path_copy = strdup(path); /* Create a copy of the PATH string */
+        directory = strtok(path_copy, ":");
+        while (directory != NULL)
+        {
+            sprintf(fullpath, "%s/%s", directory, command[0]);
+            /* If the file exists and is executable, run it */
+            if (access(fullpath, X_OK) == 0)
+            {
+                command_found = 1;
+                break;
+            }
+            directory = strtok(NULL, ":");
+        }
+        free(path_copy); /* Free the copy of the PATH string */
+    }
+    else
+    {
+        /* If the command is an absolute path, copy it to fullpath */
+        strncpy(fullpath, command[0], sizeof(fullpath) - 1);
+        fullpath[sizeof(fullpath) - 1] = '\0';
+        if (access(fullpath, X_OK) == 0)
+        {
+            command_found = 1;
+        }
+    }
+
+    /* Check if the command exists before calling fork() */
+    if (!command_found)
+    {
+        fprintf(stderr, "%s: 1: %s: not found\n", argv[0], command[0]);
+		return;
+    }
+
+    /* If the command exists, proceed with fork() */
     child_pid = fork();
     if (child_pid < 0)
     {
@@ -40,26 +78,9 @@ void executeCommand(char **command, char **environ, char *argv[])
     }
     if (child_pid == 0)
     {
-		       /* If the command is not an absolute path, search the PATH directories */
-        if (command[0][0] != '/')
+        if (execve(fullpath, command, environ) == -1)
         {
-            path = getenv("PATH");
-            directory = strtok(path, ":");
-            while (directory != NULL)
-            {
-                sprintf(fullpath, "%s/%s", directory, command[0]);
-                /* If the file exists and is executable, run it */
-                if (access(fullpath, X_OK) == 0)
-                {
-                    execve(fullpath, command, environ);
-                    break;
-                }
-                directory = strtok(NULL, ":");
-            }
-        }
-        if (execve(command[0], command, environ) == -1)
-        {
-            fprintf(stderr, "%s: No such file or directory\n", argv[0]);
+            fprintf(stderr, "%s: 1: %s: not found\n", argv[0], command[0]);
             exit(EXIT_FAILURE);
         }
     }
@@ -72,6 +93,7 @@ void executeCommand(char **command, char **environ, char *argv[])
         }
     }
 }
+
 /* function to tokenize the input */
 char **get_input(char *input)
 {
@@ -81,8 +103,8 @@ char **get_input(char *input)
     char *parsed;
     size_t index = 0;
 
-    if (!command)
-        {
+    if (command == NULL)
+    {
         fprintf(stderr, "get_input: allocation error\n");
         exit(EXIT_FAILURE);
     }
@@ -94,8 +116,8 @@ char **get_input(char *input)
                 {
             size *= 2;
             command = realloc(command, size * sizeof(char *));
-            if (!command)
-                        {
+            if (command == NULL)
+            {
                 fprintf(stderr, "get_input: allocation error\n");
                 exit(EXIT_FAILURE);
             }
@@ -194,12 +216,12 @@ void c_print(char *str)
 
 int _strlen(char *s)
 {
-        int x;
+        int x, count = 0;
 
         for (x = 0; s[x] != '\0'; x++)
         {
-                x++;
+                count++;
         }
-        return (x);
+        return (count);
 }
 
