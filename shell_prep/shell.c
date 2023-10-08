@@ -1,15 +1,15 @@
 #include "shell.h"
 
 /* Function to process user input */
-char *processInput(size_t *len)
+char *processInput(size_t *len, FILE *inputFile)
 {
     char *input = NULL;
     ssize_t read;
 
-    read = getline(&input, len, stdin);
+    read = getline(&input, len, inputFile);
     if (read == -1)
     {
-        if (feof(stdin))
+        if (feof(inputFile))
         {
             exit(EXIT_SUCCESS);
         }
@@ -91,14 +91,27 @@ char **get_input(char *input)
 
 int main(int argc, char *argv[], char **environ)
 {
+	FILE *inputFile = stdin;
     char **command;
     char *input = NULL;
     size_t len = 0;
 
+	if (argc > 1) 
+	{
+		inputFile = fopen(argv[1], "r");
+        if (inputFile == NULL) 
+		{
+            perror("Error opening input file");
+           	return (EXIT_FAILURE);
+        }
+    }
     while (argc == 1)
     {
-		printf("$ ");
-        input = processInput(&len);
+		if (inputFile == stdin)
+		{
+			c_print("$ ");
+		}
+        input = processInput(&len, inputFile);
         command = get_input(input);
 
         if (command == NULL)
@@ -116,7 +129,40 @@ int main(int argc, char *argv[], char **environ)
         free(command);
         input = NULL;
         command = NULL;
+
+		if (inputFile != stdin && feof(inputFile))
+			break;
     }
+	if (inputFile != stdin)
+       fclose(inputFile);
     return 0;
+}
+
+
+/**
+ * c_print - function to print to output
+ * @str: string to print
+ */
+
+void c_print(char *str)
+{
+	write(STDOUT_FILENO, str, _strlen(str));
+}
+
+/**
+ * _strlen - function that returns the length of a string.
+ * @s: str to return it's length.
+ * Return: integer (string length)
+ */
+
+int _strlen(char *s)
+{
+        int x;
+
+        for (x = 0; s[x] != '\0'; x++)
+        {
+                x++;
+        }
+        return (x);
 }
 
