@@ -29,6 +29,8 @@ void executeCommand(char **command, char **environ, char *argv[])
 {
     pid_t child_pid;
     int stat_loc;
+	char *path, *directory;
+	char fullpath[255];
 
     child_pid = fork();
     if (child_pid < 0)
@@ -38,6 +40,23 @@ void executeCommand(char **command, char **environ, char *argv[])
     }
     if (child_pid == 0)
     {
+		       /* If the command is not an absolute path, search the PATH directories */
+        if (command[0][0] != '/')
+        {
+            path = getenv("PATH");
+            directory = strtok(path, ":");
+            while (directory != NULL)
+            {
+                sprintf(fullpath, "%s/%s", directory, command[0]);
+                /* If the file exists and is executable, run it */
+                if (access(fullpath, X_OK) == 0)
+                {
+                    execve(fullpath, command, environ);
+                    break;
+                }
+                directory = strtok(NULL, ":");
+            }
+        }
         if (execve(command[0], command, environ) == -1)
         {
             fprintf(stderr, "%s: No such file or directory\n", argv[0]);
@@ -89,12 +108,13 @@ char **get_input(char *input)
     return command;
 }
 
-int main(int argc, char *argv[], char **environ)
+int main(int argc, char *argv[], char **env)
 {
 	FILE *inputFile = stdin;
     char **command;
     char *input = NULL;
     size_t len = 0;
+	int x = 0;
 
 	if (argc > 1) 
 	{
@@ -122,8 +142,24 @@ int main(int argc, char *argv[], char **environ)
             command = NULL;
             continue;
         }
+		if (strcmp(command[0], "env") == 0)
+    	{
+        	while (env[x])
+        	{
+            	printf("%s\n", env[x++]);
+        	}
+        	continue;
+    	}
+		if (strcmp(command[0], "exit") == 0)
+    	{
+        	free(input);
+        	free(command);
+        	if (inputFile != stdin)
+            fclose(inputFile);
+        	exit(EXIT_SUCCESS);
+    	}
 
-        executeCommand(command, environ, argv);
+        executeCommand(command, env, argv);
 
         free(input);
         free(command);
@@ -134,8 +170,9 @@ int main(int argc, char *argv[], char **environ)
 			break;
     }
 	if (inputFile != stdin)
-       fclose(inputFile);
-    return 0;
+    fclose(inputFile);
+    
+	return 0;
 }
 
 
