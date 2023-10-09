@@ -31,10 +31,24 @@ void executeCommand(char **command, char **environ, char *argv[])
     char *path, *path_copy, *directory;
     char fullpath[255];
     int command_found = 0;
-	int access_result = -1;
+    int access_result = -1;
 
-    /* If the command is not an absolute path, search the PATH directories */
-    if (command[0][0] != '/')
+    /* Check the current working directory first */
+    if (getcwd(fullpath, sizeof(fullpath)) != NULL)
+    {
+        strncat(fullpath, "/", sizeof(fullpath) - strlen(fullpath) - 1);
+        strncat(fullpath, command[0], sizeof(fullpath) - strlen(fullpath) - 1);
+
+        /* If the file exists and is executable, run it */
+        access_result = access(fullpath, X_OK);
+        if (access_result == 0)
+        {
+            command_found = 1;
+        }
+    }
+
+    /* If the command is not an absolute path and it's not in the current working directory, search the PATH directories */
+    if (!command_found && command[0][0] != '/')
     {
         path = getenv("PATH");
         path_copy = strdup(path); /* Create a copy of the PATH string */
@@ -47,7 +61,7 @@ void executeCommand(char **command, char **environ, char *argv[])
             strncat(fullpath, command[0], sizeof(fullpath) - strlen(fullpath) - 1);
 
             /* If the file exists and is executable, run it */
-			access_result = access(fullpath, X_OK);
+            access_result = access(fullpath, X_OK);
             if (access_result == 0)
             {
                 command_found = 1;
@@ -57,7 +71,7 @@ void executeCommand(char **command, char **environ, char *argv[])
         }
         free(path_copy); /* Free the copy of the PATH string */
     }
-    else
+    else if (!command_found)
     {
         /* If the command is an absolute path, copy it to fullpath */
         strncpy(fullpath, command[0], sizeof(fullpath) - 1);
@@ -72,7 +86,7 @@ void executeCommand(char **command, char **environ, char *argv[])
     if (!command_found)
     {
         fprintf(stderr, "%s: 1: %s: not found\n", argv[0], command[0]);
-		return;
+        return;
     }
 
     /* If the command exists, proceed with fork() */
