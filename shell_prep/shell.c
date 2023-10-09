@@ -31,6 +31,7 @@ void executeCommand(char **command, char **environ, char *argv[])
     char *path, *path_copy, *directory;
     char fullpath[255];
     int command_found = 0;
+	int access_result = -1;
 
     /* If the command is not an absolute path, search the PATH directories */
     if (command[0][0] != '/')
@@ -40,9 +41,14 @@ void executeCommand(char **command, char **environ, char *argv[])
         directory = strtok(path_copy, ":");
         while (directory != NULL)
         {
-            sprintf(fullpath, "%s/%s", directory, command[0]);
+            strncpy(fullpath, directory, sizeof(fullpath) - 1);
+            fullpath[sizeof(fullpath) - 1] = '\0';
+            strncat(fullpath, "/", sizeof(fullpath) - strlen(fullpath) - 1);
+            strncat(fullpath, command[0], sizeof(fullpath) - strlen(fullpath) - 1);
+
             /* If the file exists and is executable, run it */
-            if (access(fullpath, X_OK) == 0)
+			access_result = access(fullpath, X_OK);
+            if (access_result == 0)
             {
                 command_found = 1;
                 break;
@@ -56,7 +62,7 @@ void executeCommand(char **command, char **environ, char *argv[])
         /* If the command is an absolute path, copy it to fullpath */
         strncpy(fullpath, command[0], sizeof(fullpath) - 1);
         fullpath[sizeof(fullpath) - 1] = '\0';
-        if (access(fullpath, X_OK) == 0)
+        if (access_result == 0)
         {
             command_found = 1;
         }
